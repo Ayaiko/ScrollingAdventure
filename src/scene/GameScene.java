@@ -5,9 +5,11 @@ import java.util.Iterator;
 import java.util.Random;
 
 import config.GameConfig;
+import entity.Bird;
 import entity.Coin;
 import entity.Obstacle;
 import entity.Player;
+import entity.Stone;
 import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Interpolator;
@@ -117,7 +119,7 @@ public class GameScene extends BaseScene {
 		root.getChildren().add(player.getSprite());
 	}
 
-	private void spawnObstacle() {
+	/*private void spawnObstacle() {
         double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Right side, slightly off-screen
         double groundY = GameConfig.GROUND_LEVEL - Obstacle.getHeight() ; // Ground level
 
@@ -127,6 +129,29 @@ public class GameScene extends BaseScene {
         
         obstacles.add(obstacle);
         root.getChildren().add(obstacle.getShape());
+    }*/
+	
+	private void spawnObstacle() {
+		int i = getRandomNumber(0, 2);
+		if(i == 2) {
+			//Spawn Bird
+			double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Right side, slightly off-screen
+	        double groundY = GameConfig.GROUND_LEVEL - Bird.getHeight() - 250 ; // Sky level
+
+	        Bird bird = new Bird(startX, groundY);
+	        
+	        obstacles.add(bird);
+	        root.getChildren().add(bird.getShape());
+		}else {
+			//Spawn Stone
+			double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Right side, slightly off-screen
+	        double groundY = GameConfig.GROUND_LEVEL - Stone.getHeight() - 50; // Sky level
+
+	        Stone stone = new Stone(startX, groundY);
+	        
+	        obstacles.add(stone);
+	        root.getChildren().add(stone.getShape());
+		}
     }
 	
 	private void spawnCoin() {
