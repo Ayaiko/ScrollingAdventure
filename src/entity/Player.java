@@ -23,12 +23,15 @@ public class Player {
 		ObjectProperty<Integer> indexProperty = new SimpleObjectProperty<>(1);
 		sprite = new ImageView(new Image(playerImage));
 		
+		setViewPort(sprite, 1);
+		
 		indexProperty.addListener(observable -> setViewPort(sprite, indexProperty.get()));
 		createAnimation(indexProperty).play();
 		
 		sprite.setFitHeight(120);
 		sprite.setFitWidth(120);
-		sprite.setTranslateY(GameConfig.GROUND_LEVEL - sprite.getFitHeight() + 10);
+		int playerPosition = (int) (GameConfig.GROUND_LEVEL - sprite.getFitHeight() + 10);
+		sprite.setTranslateY(playerPosition);
 
 	}
 
@@ -44,21 +47,26 @@ public class Player {
 	}
 
 	public void update() {
-		if (isJumping) {
-			velocityY += GameConfig.GRAVITY;
+	    if (isJumping) {
+	        velocityY += GameConfig.GRAVITY;
+	        int playerPosition = (int) (GameConfig.GROUND_LEVEL - sprite.getFitHeight() + 10);
 
-			sprite.setTranslateY(sprite.getTranslateY() + velocityY);
+	        // ใช้ Math.min เพื่อให้ตำแหน่ง Y ไม่ต่ำกว่าพื้น
+	        sprite.setTranslateY(Math.min(sprite.getTranslateY() + velocityY, playerPosition));
+	        
 
-			if (sprite.getTranslateY() >= GameConfig.GROUND_LEVEL) {
-				sprite.setTranslateY(GameConfig.GROUND_LEVEL);
-				velocityY = 0;
-				isJumping = false;
-			}
-		}
+	        // ตรวจสอบว่าแตะพื้นแล้วหรือยัง
+	        if (sprite.getTranslateY() >= playerPosition) {
+	            velocityY = 0;  // หยุดการตก
+	            isJumping = false;  // หยุดการกระโดด
+	        }
+	    }
 	}
 
+	
+
 	private void setViewPort(ImageView sprite, int value) {
-		int column = value % 6;
+		int column = value % frame;
 
 		double xOffset = (column) * frameWidth;
 		sprite.setViewport(new Rectangle2D(xOffset, 0, frameWidth, frameHeight));
@@ -83,4 +91,5 @@ public class Player {
 		animation.setCycleCount(Animation.INDEFINITE);
 		return animation;
 	}
+
 }

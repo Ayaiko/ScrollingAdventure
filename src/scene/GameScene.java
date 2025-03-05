@@ -30,7 +30,7 @@ public class GameScene extends BaseScene {
 
 	private long lastSpawnTime = 0;
 	private static final long SPAWN_INTERVAL = 2000000000L; // Every 2 seconds
-
+	
 	public GameScene() {
 		root.setAlignment(Pos.TOP_LEFT);
 		
@@ -39,7 +39,7 @@ public class GameScene extends BaseScene {
 		});
 		
 		inputController = new InputController();
-		Player player = new Player(playerImage);
+		player = new Player(playerImage);
 		obstacles = new ArrayList<Obstacle>();
 
 		backgroundController = new BackgroundController(root, bgPath);

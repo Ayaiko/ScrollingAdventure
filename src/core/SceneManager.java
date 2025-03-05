@@ -29,8 +29,10 @@ public class SceneManager {
 		stage.show();
 	}
 	
-	public void showGameMenu() {
-		Scene scene = new GameScene().getScene();
+	public void showGame() {
+		GameScene game = new GameScene();
+		
+		Scene scene = game.getScene();
 		stage.setScene(scene);
 		stage.show();
 	} 
