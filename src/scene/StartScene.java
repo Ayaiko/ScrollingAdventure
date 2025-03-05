@@ -25,6 +25,7 @@ public class StartScene extends BaseScene {
     private Button playBtn;
     private Button exitBtn;
     private Button selectMapBtn;
+    private Button selectCharacterBtn;
     private VBox vBox;
     private Pane root;
     private Stage primaryStage;
@@ -35,9 +36,10 @@ public class StartScene extends BaseScene {
         initPlayButton();
         initExitButton();
         initSelectMapButton();
+        initSelectCharacterButton();
 
         vBox = new VBox();
-        vBox.getChildren().addAll(playBtn, selectMapBtn, exitBtn);
+        vBox.getChildren().addAll(playBtn, selectCharacterBtn, selectMapBtn, exitBtn);
         vBox.setSpacing(15);
         vBox.setAlignment(Pos.CENTER);  // Align buttons at the center
 
@@ -53,7 +55,7 @@ public class StartScene extends BaseScene {
     private StackPane initTitlePane() {
         // Create the text for the title
         Text title = new Text("RUN, Daerei!");
-        title.setFont(Font.font("Serif", FontWeight.BOLD, 150));
+        title.setFont(Font.font("Serif", FontWeight.BOLD, 120));
         title.setFill(Color.HOTPINK);
 
         // Create a rectangle to serve as the frame for the title
@@ -126,7 +128,17 @@ public class StartScene extends BaseScene {
         selectMapBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+            	//Change to MapSeloctorPane
+            }
+        });
+    }
+    
+    private void initSelectCharacterButton() {
+    	selectCharacterBtn = createStyledButton("Select Character");
+        selectCharacterBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+            	//Change to CharacterSeloctorPane
             }
         });
     }

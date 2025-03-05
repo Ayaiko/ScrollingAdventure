@@ -2,6 +2,7 @@ package core;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import scene.CharacterSelectorPane;
 import scene.GameScene;
 import scene.PauseScene;
 import scene.StartScene;
@@ -25,7 +26,7 @@ public class SceneManager {
 	}
 	
 	public void showStartMenu() {
-		Scene scene = new PauseScene().getScene();
+		Scene scene = new CharacterSelectorPane().getScene();
 		stage.setScene(scene);
 		stage.show();
 	}
