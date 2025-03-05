@@ -154,6 +154,9 @@ public class GameScene extends BaseScene {
     private void spawnCoin() {
         double startX = GameConfig.SCREEN_WIDTH / 2 + 15; // Slightly off-screen on the right
         double groundY = GameConfig.GROUND_LEVEL - Coin.getHeight() - 20; // Ground level
+        int i = getRandomNumber(0, 2);
+		if(i == 2) groundY-=50;
+		
 
         Coin coin = new Coin(startX, groundY);
         coins.add(coin);

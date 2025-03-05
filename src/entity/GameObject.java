@@ -3,16 +3,22 @@ package entity;
 import java.util.Random;
 
 import config.GameConfig;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 public class GameObject {
 	protected Rectangle shape;
-	protected static final double WIDTH = 20;
-    protected static final double HEIGHT = 20;
+	protected static final double WIDTH = 60;
+    protected static final double HEIGHT = 40;
     protected static final double SPEED = 2; // Obstacle speed	
     
-    public GameObject() {
-    	
+    public GameObject(double x, double y, double width, double heigth, Image image) {
+        shape = new Rectangle(width, heigth);
+        shape.setFill(new ImagePattern(image));
+        shape.setTranslateX(x); // Adjusted for StackPane
+        shape.setTranslateY(y); // Adjusted for ground level
     }
 	
 	public void move() {

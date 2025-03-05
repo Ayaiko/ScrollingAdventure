@@ -1,19 +1,19 @@
 package entity;
 
 import java.util.Random;
-
 import config.GameConfig;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import logic.game.Collectible;
 
-public class Coin extends GameObject{
-
+public class Coin extends GameObject implements Collectible{
+	private final static Image coinImage = new Image(ClassLoader.getSystemResource("coin.png").toString());
+	
     public Coin(double x, double y) {
-        shape = new Rectangle(WIDTH, HEIGHT, Color.YELLOW);
-        int i = getRandomNumber(0, 2);
-		if(i == 2) y-=50;
-        shape.setTranslateX(x); // Adjusted for StackPane
-        shape.setTranslateY(y); // Adjusted for ground level
+    	super(x, y, 60, 40, coinImage);
+
     }
 
     

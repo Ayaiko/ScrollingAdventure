@@ -14,7 +14,6 @@ public class Player extends SpriteAnimator {
 		sprite.setFitWidth(120);
 		int playerPosition = (int) (GameConfig.GROUND_LEVEL - sprite.getFitHeight() + 10);
 		sprite.setTranslateY(playerPosition);
-
 	}
 
 	public void jump() {
@@ -32,7 +31,6 @@ public class Player extends SpriteAnimator {
 	        // ใช้ Math.min เพื่อให้ตำแหน่ง Y ไม่ต่ำกว่าพื้น
 	        sprite.setTranslateY(Math.min(sprite.getTranslateY() + velocityY, playerPosition));
 	        
-
 	        // ตรวจสอบว่าแตะพื้นแล้วหรือยัง
 	        if (sprite.getTranslateY() >= playerPosition) {
 	            velocityY = 0;  // หยุดการตก
