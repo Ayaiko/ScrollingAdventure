@@ -26,7 +26,7 @@ public class SceneManager {
 	}
 	
 	public void showStartMenu() {
-		Scene scene = new CharacterSelectorPane().getScene();
+		Scene scene = new StartScene().getScene();
 		stage.setScene(scene);
 		stage.show();
 	}
