@@ -104,7 +104,7 @@ public class PauseScene extends BaseScene{
         quitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //Back to StartScene
+            	SceneManager.getInstance().showStartMenu();
             }
         });
     }

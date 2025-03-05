@@ -1,6 +1,7 @@
 package scene;
 
 import config.GameConfig;
+import core.SceneManager;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.effect.Glow;
@@ -10,6 +11,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,6 +115,7 @@ public class CharacterSelectorPane extends BaseScene {
         }
     }
 
+
     private void initFooter() {
         selectedCharacter = new Text("Selected: Daerei"); // ค่าเริ่มต้นเป็น Daerei
         selectedCharacter.setFont(Font.font("Serif", FontWeight.BOLD, 30));
@@ -134,8 +143,39 @@ public class CharacterSelectorPane extends BaseScene {
         // ทำให้คำโปรยชิดกับ "Selected" มากขึ้น
         storyPane.setTranslateY(20); // ลดระยะห่างระหว่างคำโปรยกับ "Selected"
 
-        mainLayout.getChildren().addAll(selectedCharacter, storyPane); // ใช้เฉพาะกรอบข้อความนี้แทน Good luck
+        // ปุ่มกลับไปที่หน้าเมนู
+        Button backButton = new Button("Back to Menu");
+        backButton.setFont(Font.font("Serif", FontWeight.BOLD, 20));
+        backButton.setTextFill(Color.WHITE);
+        backButton.setStyle("-fx-background-color: #F08080; -fx-border-color: #FF1493; -fx-border-width: 2;");
+        backButton.setShape(new javafx.scene.shape.Rectangle(15, 15)); // ให้ปุ่มมีขอบมน
+
+        // เอฟเฟกต์เมื่อเมาส์เข้าและออกจากปุ่ม
+        backButton.setOnMouseEntered((MouseEvent event) -> {
+            backButton.setStyle("-fx-background-color: #FF1493; -fx-border-color: #FF1493; -fx-border-width: 2; -fx-text-fill: white;");
+            backButton.setEffect(new Glow(0.8)); // ทำให้ปุ่มเรืองแสง
+        });
+
+        backButton.setOnMouseExited((MouseEvent event) -> {
+            backButton.setStyle("-fx-background-color: #F08080; -fx-border-color: #FF1493; -fx-border-width: 2; -fx-text-fill: white;");
+            backButton.setEffect(null); // หยุดเรืองแสงเมื่อเมาส์ออกจากปุ่ม
+        });
+
+        backButton.setOnAction(event -> goBackToMenu());
+
+        // วางปุ่มใน HBox พร้อมกับข้อความ "Selected"
+        HBox footerBox = new HBox(20, selectedCharacter, backButton);
+        footerBox.setAlignment(Pos.CENTER);
+
+        mainLayout.getChildren().addAll(footerBox, storyPane); // ใช้ footerBox พร้อมกับข้อความนี้แทน Good luck
     }
+
+    private void goBackToMenu() {
+        // ฟังก์ชันสำหรับกลับไปที่หน้าเมนู
+        // คุณสามารถจัดการการเปลี่ยนหน้าได้ตามที่ต้องการที่นี่
+        SceneManager.getInstance().showStartMenu(); // สมมุติว่า `MainMenuPane` คือคลาสของหน้าเมนู
+    }
+
 
 
     @Override
