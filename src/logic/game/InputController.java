@@ -1,41 +1,34 @@
 package logic.game;
 
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import scene.GameScene;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InputController {
-	private boolean enterPressed = false;
+    private final Set<KeyCode> pressedKeys = new HashSet<>();
 
-	public InputController() {
-		keyboardSetup();
-	}
+    public InputController() {
 
-	public void keyboardSetup() {
-		GameScene.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
+    }
 
-				if (e.getCode() == KeyCode.SPACE) {
-					enterPressed = true;
-				}
-			}
+    // Setup method to be called when a scene is available
+    public void keyboardSetup(Scene scene) {
+        scene.setOnKeyPressed(e -> handleKeyPress(e));
+        scene.setOnKeyReleased(e -> handleKeyRelease(e));
+    }
 
-		});
-		GameScene.getScene().setOnKeyReleased(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
+    private void handleKeyPress(KeyEvent e) {
+        pressedKeys.add(e.getCode());
+    }
 
-				if (e.getCode() == KeyCode.SPACE) {
-					enterPressed = false;
-				}
-			}
-		});
-	}
+    private void handleKeyRelease(KeyEvent e) {
+        pressedKeys.remove(e.getCode());
+    }
 
-	public boolean isEnterPressed() {
-		return enterPressed;
-	}
-
+    public boolean isKeyPressed(KeyCode key) {
+        return pressedKeys.contains(key);
+    }
 }

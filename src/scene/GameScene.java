@@ -6,82 +6,104 @@ import java.util.Iterator;
 import config.GameConfig;
 import entity.Obstacle;
 import entity.Player;
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
-import javafx.animation.Interpolator;
-import javafx.animation.Transition;
 import javafx.geometry.Pos;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 import logic.game.BackgroundController;
 import logic.game.InputController;
 
 public class GameScene extends BaseScene {
-	private Player player;
-	private ArrayList<Obstacle> obstacles;
-	private final String bgPath = "test.jpg"; // Path to your background image
-	private final String playerImage = "ex.png";
+	private StackPane root;
+    private final Player player;
+    private final ArrayList<Obstacle> obstacles;
 
-	private InputController inputController;
-	private BackgroundController backgroundController;
+    private final BackgroundController backgroundController;
 
-	private long lastSpawnTime = 0;
-	private static final long SPAWN_INTERVAL = 2000000000L; // Every 2 seconds
-	
-	public GameScene() {
-		root.setAlignment(Pos.TOP_LEFT);
-		
-		root.setOnMouseClicked(e -> {
-			System.out.println(e.getY());
-		});
-		
-		inputController = new InputController();
-		player = new Player(playerImage);
-		obstacles = new ArrayList<Obstacle>();
+    private long lastSpawnTime = 0;
+    private static final long SPAWN_INTERVAL = 2_000_000_000L; // 2 seconds
+    
+    public GameScene() {
+    	initScene();
+        root.setAlignment(Pos.TOP_LEFT);
+        
+        player = new Player("ex.png");
+        obstacles = new ArrayList<>();
 
-		backgroundController = new BackgroundController(root, bgPath);
-		backgroundController.startScolling();
+        backgroundController = new BackgroundController(root, "test.jpg");
+        backgroundController.startScolling();
+        
+        root.getChildren().add(player.getSprite());
+        initializeGameLoop();
+    }
 
-		// Game loop
-		new AnimationTimer() {
-			@Override
-			public void handle(long now) {
-				if (inputController.isEnterPressed()) {
-					player.jump();
-				}
-				player.update();
+    private void initializeGameLoop() {
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                processPlayerInput();
+                updatePlayer();
+                handleObstacles(now);
+            }
+        }.start();
+    }
 
-				// Spawn obstacles
-				if (now - lastSpawnTime > SPAWN_INTERVAL) {
-					spawnObstacle();
-					lastSpawnTime = now;
-				}
+    private void processPlayerInput() {
+        if (inputController.isKeyPressed(KeyCode.SPACE)) {
+            player.jump();
+        }
+    }
 
-				// Move and remove obstacles
-				Iterator<Obstacle> iterator = obstacles.iterator();
-				while (iterator.hasNext()) {
-					Obstacle obstacle = iterator.next();
-					obstacle.move();
+    private void updatePlayer() {
+        player.update();
+    }
 
-					if (obstacle.isOutOfScreen()) {
-						root.getChildren().remove(obstacle.getShape());
-						iterator.remove();
-					}
-				}
-			}
-		}.start();
-		root.getChildren().add(player.getSprite());
-	}
+    private void handleObstacles(long now) {
+        if (shouldSpawnObstacle(now)) {
+            spawnObstacle();
+            lastSpawnTime = now;
+        }
+        updateObstacles();
+    }
 
-	private void spawnObstacle() {
-        double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Right side, slightly off-screen
-        double groundY = GameConfig.GROUND_LEVEL - Obstacle.getHeight() ; // Ground level
+    private boolean shouldSpawnObstacle(long now) {
+        return now - lastSpawnTime > SPAWN_INTERVAL;
+    }
 
+    private void spawnObstacle() {
+        double startX = GameConfig.SCREEN_WIDTH; // Spawn slightly off-screen
+        double groundY = GameConfig.GROUND_LEVEL - Obstacle.getHeight();
+        
         Obstacle obstacle = new Obstacle(startX, groundY);
         obstacles.add(obstacle);
         root.getChildren().add(obstacle.getShape());
     }
+
+    private void updateObstacles() {
+        Iterator<Obstacle> iterator = obstacles.iterator();
+        while (iterator.hasNext()) {
+            Obstacle obstacle = iterator.next();
+            obstacle.move();
+            
+            if (obstacle.isOutOfScreen()) {
+                removeObstacle(iterator, obstacle);
+            }
+        }
+    }
+
+    private void removeObstacle(Iterator<Obstacle> iterator, Obstacle obstacle) {
+        root.getChildren().remove(obstacle.getShape());
+        iterator.remove();
+    }
+
+	@Override
+	protected void initScene() {
+		// TODO Auto-generated method stub
+		root = new StackPane();
+		scene = new Scene(root, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+		
+		initInputController();
+	}
 }

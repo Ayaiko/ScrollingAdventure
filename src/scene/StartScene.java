@@ -2,15 +2,19 @@ package scene;
 
 import java.util.ArrayList;
 
+import config.GameConfig;
 import core.SceneManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -20,8 +24,10 @@ public class StartScene extends BaseScene {
 	private Button playBtn;
 	private Button exitBtn;
 	private VBox vBox;
+	private Pane root;
 	
 	public StartScene() {
+		initScene();
 		initPlayButton();
 		initExitButton();
 		
@@ -66,5 +72,12 @@ public class StartScene extends BaseScene {
             }
         });
     }
+    
+    @Override
+	protected void initScene() {
+		// TODO Auto-generated method stub
+    	root = new StackPane();
+		scene = new Scene(root, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+	}
 
 }

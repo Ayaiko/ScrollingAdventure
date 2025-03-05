@@ -4,17 +4,28 @@ import config.GameConfig;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import logic.game.InputController;
 
-public class BaseScene {
-	protected static Scene scene;
-	protected StackPane root;
+public abstract class BaseScene {
+    protected InputController inputController;
+    protected Scene scene;
 	
 	public BaseScene() {
-		root = new StackPane();
-		scene = new Scene(root, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
+		inputController = new InputController();
 	}
 	
-	public static Scene getScene() {
+	// This method is used to initialize the InputController after the scene has been set up
+    protected void initInputController() {
+        if (scene != null) {
+            inputController.keyboardSetup(scene);
+        } else {
+            throw new IllegalStateException("Scene must be initialized before the InputController.");
+        }
+    }
+	
+	protected abstract void initScene();
+	
+	public Scene getScene() {
 		return scene;
 	}
 }
