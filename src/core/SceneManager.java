@@ -33,7 +33,5 @@ public class SceneManager {
 		GameScene game = new GameScene();
 		
 		Scene scene = game.getScene();
-		stage.setScene(scene);
-		stage.show();
 	} 
 }

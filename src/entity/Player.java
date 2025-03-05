@@ -24,7 +24,6 @@ public class Player {
 		sprite = new ImageView(new Image(playerImage));
 		
 		setViewPort(sprite, 1);
-		
 		indexProperty.addListener(observable -> setViewPort(sprite, indexProperty.get()));
 		createAnimation(indexProperty).play();
 		
@@ -91,5 +90,4 @@ public class Player {
 		animation.setCycleCount(Animation.INDEFINITE);
 		return animation;
 	}
-
 }

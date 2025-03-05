@@ -6,14 +6,16 @@ import config.GameConfig;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Obstacle {
-    private Rectangle shape;
-    private static double width;
-    private static double heigth;
+public class Coin {
+	private Rectangle shape;
+    private static final double WIDTH = 20;
+    private static final double HEIGHT = 20;
     private static final double SPEED = 2; // Obstacle speed
 
-    public Obstacle(double x, double y, double width, double heigth, Color color) {
-        shape = new Rectangle(width, heigth, color);
+    public Coin(double x, double y) {
+        shape = new Rectangle(WIDTH, HEIGHT, Color.YELLOW);
+        int i = getRandomNumber(0, 2);
+		if(i == 2) y-=50;
         shape.setTranslateX(x); // Adjusted for StackPane
         shape.setTranslateY(y); // Adjusted for ground level
     }
@@ -27,20 +29,19 @@ public class Obstacle {
     }
 
     public boolean isOutOfScreen() {
-        return shape.getTranslateX() < - GameConfig.SCREEN_WIDTH / 2 - this.getWidth();
+        return shape.getTranslateX() < - GameConfig.SCREEN_WIDTH / 2 - WIDTH;
     }
 
 	public static double getWidth() {
-		return width;
+		return WIDTH;
 	}
 
 	public static double getHeight() {
-		return heigth;
+		return HEIGHT;
 	}
 	
 	public static int getRandomNumber(int a, int b) {
         Random random = new Random();
         return random.nextInt(b - a + 1) + a; // สุ่มเลขระหว่าง a ถึง b
     }
-    
 }
