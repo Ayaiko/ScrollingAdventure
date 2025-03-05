@@ -21,25 +21,23 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class StartScene extends BaseScene {
-    private Button playBtn;
-    private Button exitBtn;
-    private Button selectMapBtn;
-    private Button selectCharacterBtn;
-    private VBox vBox;
-    private Pane root;
-    private Stage primaryStage;
-
-    public StartScene() {
-        initScene();
+public class PauseScene extends BaseScene{
+	 private Button continueBtn;
+	 private Button restartBtn;
+	 private Button quitBtn;
+	 private VBox vBox;
+	 private Pane root;
+	 private Stage primaryStage;
+	    
+	public PauseScene(){
+		initScene();
         initTitlePane();
-        initPlayButton();
-        initExitButton();
-        initSelectMapButton();
-        initSelectCharacterButton();
+        initContinueButton();
+        initQuitButton();
+        initRestartButton();
 
         vBox = new VBox();
-        vBox.getChildren().addAll(playBtn, selectCharacterBtn, selectMapBtn, exitBtn);
+        vBox.getChildren().addAll(continueBtn, restartBtn, quitBtn);
         vBox.setSpacing(15);
         vBox.setAlignment(Pos.CENTER);  // Align buttons at the center
 
@@ -50,12 +48,12 @@ public class StartScene extends BaseScene {
         mainLayout.getChildren().addAll(initTitlePane(), vBox, initTaglinePane());  // Add title, buttons, and tagline
 
         root.getChildren().add(mainLayout);
-    }
-
-    private StackPane initTitlePane() {
+	}
+	
+	private StackPane initTitlePane() {
         // Create the text for the title
-        Text title = new Text("RUN, Daerei!");
-        title.setFont(Font.font("Serif", FontWeight.BOLD, 120));
+        Text title = new Text("PAUSE");
+        title.setFont(Font.font("Serif", FontWeight.BOLD, 150));
         title.setFill(Color.HOTPINK);
 
         // Create a rectangle to serve as the frame for the title
@@ -78,9 +76,7 @@ public class StartScene extends BaseScene {
 
     private StackPane initTaglinePane() {
         // Create the text for the tagline
-        Text tagline = new Text("Embark on the journey of a fallen princess, bound by fate and yearning to break free. "
-                + "Chase her quest for fortune and freedom as she faces obstacles that stand in her way. "
-                + "Will you help her escape the chains of her past?");
+        Text tagline = new Text("Alas, the journey has come to an untimely pause..." + "Yet the road ahead still beckons." + " Shall you press on and carve destiny anew?");
         tagline.setFont(Font.font("Serif", FontWeight.NORMAL, 24));
         tagline.setFill(Color.HOTPINK);
         tagline.setWrappingWidth(600); // Make sure the text fits on the screen
@@ -103,42 +99,32 @@ public class StartScene extends BaseScene {
         return taglinePane;
     }
 
-    private void initExitButton() {
-        exitBtn = createStyledButton("Exit");
-        exitBtn.setOnAction(new EventHandler<ActionEvent>() {
+    private void initQuitButton() {
+        quitBtn = createStyledButton("Quit");
+        quitBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Platform.exit();
+                //Back to StartScene
             }
         });
     }
 
-    private void initPlayButton() {
-        playBtn = createStyledButton("Play");
-        playBtn.setOnAction(new EventHandler<ActionEvent>() {
+    private void initContinueButton() {
+    	continueBtn = createStyledButton("Continue");
+    	continueBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                SceneManager.getInstance().showGame();
+                //Continue game
             }
         });
     }
 
-    private void initSelectMapButton() {
-        selectMapBtn = createStyledButton("Select Map");
-        selectMapBtn.setOnAction(new EventHandler<ActionEvent>() {
+    private void initRestartButton() {
+    	restartBtn = createStyledButton("Restart");
+    	restartBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-            	//Change to MapSeloctorPane
-            }
-        });
-    }
-    
-    private void initSelectCharacterButton() {
-    	selectCharacterBtn = createStyledButton("Select Character");
-        selectCharacterBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-            	//Change to CharacterSeloctorPane
+            	SceneManager.getInstance().showGame();
             }
         });
     }
@@ -161,5 +147,3 @@ public class StartScene extends BaseScene {
         scene = new Scene(root, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
     }
 }
-
-
