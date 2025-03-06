@@ -133,7 +133,7 @@ public class GameScene extends BaseScene {
     // Method to spawn a bird
     private void spawnBird() {
         double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Slightly off-screen on the right
-        double groundY = GameConfig.GROUND_LEVEL - Bird.getHeight() - 250; // Sky level
+        double groundY = GameConfig.GROUND_LEVEL - Bird.getHeight() - 175; // Sky level
 
         Bird bird = new Bird(startX, groundY);
         obstacles.add(bird);
@@ -143,7 +143,7 @@ public class GameScene extends BaseScene {
     // Method to spawn a stone
     private void spawnStone() {
         double startX = GameConfig.SCREEN_WIDTH / 2 + 50; // Slightly off-screen on the right
-        double groundY = GameConfig.GROUND_LEVEL - Stone.getHeight() - 50; // Ground level
+        double groundY = GameConfig.GROUND_LEVEL - Stone.getHeight() - 40; // Ground level
 
         Stone stone = new Stone(startX, groundY);
         obstacles.add(stone);

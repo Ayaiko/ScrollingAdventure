@@ -8,7 +8,7 @@ public class Bird extends Obstacle{
 	private final static Image birdImage = new Image(ClassLoader.getSystemResource("bird.png").toString());
 	
 	public Bird(double x, double y) {
-		super(x, y, 200, 300, birdImage);
+		super(x, y, 200, 150, birdImage);
 	}
 	
 }
