@@ -2,7 +2,6 @@ package scene;
 
 import config.GameConfig;
 import core.SceneManager;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,28 +19,31 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 
-public class StartScene extends BaseScene {
-    private Button playBtn;
-    private Button exitBtn;
-    private Button selectMapBtn;
-    private Button selectCharacterBtn;
-    private Button selectDifficultyBtn;
+public class DifficultyScene extends BaseScene{
+	private Stage stage;
+    private static double initialSpeedMultiplier;
+    private static boolean speedIncreases;
+    private Button easyBtn;
+    private Button normalBtn;
+    private Button hardBtn;
+    private Button backToMenuBtn;
     private VBox vBox;
     private Pane root;
     private Stage primaryStage;
-
-    public StartScene() {
+    
+    public DifficultyScene() {
         initScene();
         initTitlePane();
-        initPlayButton();
-        initExitButton();
-        initSelectMapButton();
-        initSelectCharacterButton();
-        initSelectDifficultyButton();
+        initEasyButton();
+        initNormalButton();
+        initHardButton();
+        initBackToMenuButton();
 
         vBox = new VBox();
-        vBox.getChildren().addAll(playBtn, selectCharacterBtn, selectMapBtn, selectDifficultyBtn, exitBtn);
+        vBox.getChildren().addAll(easyBtn, normalBtn, hardBtn, backToMenuBtn);
         vBox.setSpacing(15);
         vBox.setAlignment(Pos.CENTER);  // Align buttons at the center
 
@@ -53,11 +55,11 @@ public class StartScene extends BaseScene {
 
         root.getChildren().add(mainLayout);
     }
-
-    private StackPane initTitlePane() {
+	
+	private StackPane initTitlePane() {
         // Create the text for the title
-        Text title = new Text("RUN, Daerei!");
-        title.setFont(Font.font("Serif", FontWeight.BOLD, 120));
+        Text title = new Text("CHOOSE DIFFICULTY LEVEL");
+        title.setFont(Font.font("Serif", FontWeight.BOLD, 70));
         title.setFill(Color.HOTPINK);
 
         // Create a rectangle to serve as the frame for the title
@@ -80,12 +82,16 @@ public class StartScene extends BaseScene {
 
     private StackPane initTaglinePane() {
         // Create the text for the tagline
-        Text tagline = new Text("Embark on the journey of a fallen princess, bound by fate and yearning to break free. "
-                + "Chase her quest for fortune and freedom as she faces obstacles that stand in her way. "
-                + "Will you help her escape the chains of her past?");
+        Text tagline = new Text("\"The path ahead is full of trials, each more daunting than the last. Choose wisely the difficulty of your journey, for the road you take shall shape the challenges you face.\"\r\n"
+        		+ "\r\n"
+        		+ "Easy: A gentle breeze guides you forward, where obstacles are few and victory is within reach.\r\n"
+        		+ "Normal: The road is uncertain, with both trials and triumphs awaiting. Only the brave shall succeed.\r\n"
+        		+ "Hard: The path is fraught with peril, where every step is a test of strength and resolve. Only the most valiant may endure.\r\n"
+        		+ "\r\n"
+        		+ "Choose your fate, and let the journey unfold as you dare.");
         tagline.setFont(Font.font("Serif", FontWeight.NORMAL, 24));
         tagline.setFill(Color.HOTPINK);
-        tagline.setWrappingWidth(600); // Make sure the text fits on the screen
+        tagline.setWrappingWidth(1200); // Make sure the text fits on the screen
 
         // Create a rectangle to serve as the frame for the tagline
         Rectangle taglineFrame = new Rectangle();
@@ -105,52 +111,39 @@ public class StartScene extends BaseScene {
         return taglinePane;
     }
 
-    private void initExitButton() {
-        exitBtn = createStyledButton("Exit");
-        exitBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Platform.exit();
-            }
-        });
+    private void initEasyButton() {
+        easyBtn = createStyledButton("Easy");
+        easyBtn.setOnAction((e -> {
+            setInitialSpeedMultiplier(1.0);
+            setSpeedIncreases(false);
+            highlightSelectedButton(easyBtn);
+        }));
     }
 
-    private void initPlayButton() {
-        playBtn = createStyledButton("Play");
-        playBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                SceneManager.getInstance().showGame();
-            }
-        });
+    private void initNormalButton() {
+        normalBtn = createStyledButton("Normal");
+        normalBtn.setOnAction((e -> {
+            setInitialSpeedMultiplier(1.0);
+            setSpeedIncreases(true);
+            highlightSelectedButton(normalBtn);
+        }));
     }
 
-    private void initSelectMapButton() {
-        selectMapBtn = createStyledButton("Select Map");
-        selectMapBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-            	//Change to MapSeloctorPane
-            }
-        });
+    private void initHardButton() {
+        hardBtn = createStyledButton("Hard");
+        hardBtn.setOnAction((e -> {
+            setInitialSpeedMultiplier(1.5);
+            setSpeedIncreases(true);
+            highlightSelectedButton(hardBtn);
+        }));
     }
-    
-    private void initSelectCharacterButton() {
-    	selectCharacterBtn = createStyledButton("Select Character");
-        selectCharacterBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+    private void initBackToMenuButton() {
+        backToMenuBtn = createStyledButton("Back to Menu");
+        backToMenuBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-            	SceneManager.getInstance().showCharacterSelectorScene();
-            }
-        });
-    }
-    
-    private void initSelectDifficultyButton() {
-    	selectDifficultyBtn = createStyledButton("Select Difficulty");
-    	selectDifficultyBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-            	SceneManager.getInstance().showDifficultyScene();
+                SceneManager.getInstance().showStartMenu();
             }
         });
     }
@@ -165,6 +158,20 @@ public class StartScene extends BaseScene {
         button.setOnMouseExited(e -> button.setBackground(new Background(new BackgroundFill(Color.PINK, new CornerRadii(15), null))));
         return button;
     }
+    
+    private void highlightSelectedButton(Button selectedButton) {
+        // Remove glow effect from all buttons
+        easyBtn.setEffect(null);
+        normalBtn.setEffect(null);
+        hardBtn.setEffect(null);
+
+        // Apply glow effect to the selected button
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.YELLOW); // Set the glow color
+        glow.setRadius(25); // Adjust the intensity of the glow
+        glow.setSpread(0.5); // Adjust how far the glow spreads
+        selectedButton.setEffect(glow);
+    }
 
     @Override
     protected void initScene() {
@@ -172,6 +179,26 @@ public class StartScene extends BaseScene {
         root.setBackground(new Background(new BackgroundFill(Color.LAVENDERBLUSH, CornerRadii.EMPTY, null)));
         scene = new Scene(root, GameConfig.SCREEN_WIDTH, GameConfig.SCREEN_HEIGHT);
     }
+
+
+    /*private void startGame(double initialSpeed, boolean speedIncreases) {
+        GameScene gameScene = new GameScene(initialSpeed, speedIncreases);
+        stage.setScene(gameScene.getScene());
+    }*/
+    
+    public static double getInitialSpeedMultiplier() {
+		return initialSpeedMultiplier;
+	}
+
+	public static void setInitialSpeedMultiplier(double initialSpeedMultiplier) {
+		DifficultyScene.initialSpeedMultiplier = initialSpeedMultiplier;
+	}
+
+	public static boolean isSpeedIncreases() {
+		return speedIncreases;
+	}
+
+	public static void setSpeedIncreases(boolean speedIncreases) {
+		DifficultyScene.speedIncreases = speedIncreases;
+	}
 }
-
-

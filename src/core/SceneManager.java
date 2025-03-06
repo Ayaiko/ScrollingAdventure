@@ -3,6 +3,7 @@ package core;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import scene.CharacterSelectorPane;
+import scene.DifficultyScene;
 import scene.GameScene;
 import scene.PauseScene;
 import scene.StartScene;
@@ -32,9 +33,23 @@ public class SceneManager {
 	}
 	
 	public void showGame() {
-		GameScene game = new GameScene();
+		double speed = DifficultyScene.getInitialSpeedMultiplier();
+		boolean increase = DifficultyScene.isSpeedIncreases();
+		GameScene game = new GameScene(speed, increase);
 		
 		Scene scene = game.getScene();
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	public void showDifficultyScene() {
+		Scene scene = new DifficultyScene().getScene();
+		stage.setScene(scene);
+		stage.show();
+	} 
+	
+	public void showCharacterSelectorScene() {
+		Scene scene = new CharacterSelectorPane().getScene();
 		stage.setScene(scene);
 		stage.show();
 	} 
